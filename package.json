@@ -1,0 +1,27 @@
+{
+  "name": "guru-live-studio",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "dev:api": "node --watch --env-file-if-exists=.env server/index.js",
+    "dev:all": "concurrently -k \"npm:dev\" \"npm:dev:api\"",
+    "build": "vite build",
+    "start:api": "node --env-file-if-exists=.env server/index.js",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@vitejs/plugin-react": "^5.0.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "express": "^5.1.0",
+    "express-rate-limit": "^8.1.0",
+    "multer": "^2.0.2",
+    "rollup": "npm:@rollup/wasm-node@^4.65.1",
+    "vite": "^7.0.0"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
+}
