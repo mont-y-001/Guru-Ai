@@ -1,28 +1,59 @@
-# Guru Live Studio
+# Guru AI
 
-React studio UI with a small Express API for AI chat, text-to-speech, and audio transcription.
+Full-stack AI studio application built with Next.js App Router, Tailwind CSS, Prisma ORM, and PostgreSQL (Neon).
 
-## Run locally
+Features AI conversation, speech generation (TTS), and audio transcription across three interactive modes: **Podcast**, **Interview**, and **Tutor**.
 
-1. Install Node.js 20.19 or newer.
-2. Run `npm install`.
-3. Copy `.env.example` to `.env` and set `OPENAI_API_KEY`.
-4. Run `npm run dev:all`.
-5. Open the Vite URL printed in the terminal.
+## Getting Started
 
-The API listens on `127.0.0.1:4000`; Vite proxies `/api` requests to it. For container hosting, set `HOST=0.0.0.0` and configure `TRUST_PROXY=true` only when requests arrive through a trusted reverse proxy. Never put provider keys in client-side environment variables or commit `.env`.
+### 1. Prerequisites
+- Node.js 20.19 or newer
+- PostgreSQL database (e.g. Neon)
+- OpenAI API Key
 
-Without a provider key, the health check and persona list still work, but chat, speech generation, and transcription return an explicit configuration error. Sessions are held in memory and disappear when the API process restarts; production use should add durable storage, authentication, and deployment-specific rate limits.
+### 2. Environment Setup
+Create `fullstack/.env` (refer to `fullstack/.env.example`):
 
-## API
+```bash
+DATABASE_URL="postgresql://user:password@host/database?sslmode=require"
+OPENAI_API_KEY="your-openai-api-key"
+OPENAI_CHAT_MODEL="gpt-4o-mini"
+OPENAI_TTS_MODEL="gpt-4o-mini-tts"
+OPENAI_TRANSCRIPTION_MODEL="gpt-4o-mini-transcribe"
+```
 
-- `GET /api/health` — reports which provider-backed features are configured.
-- `GET /api/voices` — lists original fictional personas and their preset provider voices.
-- `POST /api/sessions` — create a `podcast`, `interview`, or `tutor` session.
-- `GET /api/sessions/:sessionId` — read a session and its messages.
-- `POST /api/sessions/:sessionId/turns` — generate a mode-aware AI response.
-- `POST /api/sessions/:sessionId/speech` — stream MP3 speech for a reply.
-- `POST /api/sessions/:sessionId/transcriptions` — transcribe a microphone recording (`audio` multipart field; 15 MB limit).
-- `POST /api/sessions/:sessionId/end` — end a session.
+### 3. Install & Initialize
+From the repository root:
 
-The app uses fictional personas and preset voices. It does not imitate, clone, or claim to reproduce a real person's voice.
+```bash
+cd fullstack
+npm install
+npx prisma generate
+```
+
+### 4. Run the Development Server
+From the repository root or inside `fullstack`:
+
+```bash
+npm run dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+## Project Structure
+
+```
+Guru-Ai/
+├── fullstack/
+│   ├── app/
+│   │   ├── api/            # Next.js route handlers (sessions, speech, turns, etc.)
+│   │   ├── lib/            # OpenAI client, Prisma client, personas config
+│   │   ├── page.tsx        # Main studio UI
+│   │   ├── layout.tsx
+│   │   └── globals.css
+│   ├── prisma/
+│   │   └── schema.prisma   # Database schema for sessions & messages
+│   └── package.json
+├── package.json            # Root runner forwarding commands to fullstack/
+└── README.md
+```
